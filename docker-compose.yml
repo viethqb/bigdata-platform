@@ -25,8 +25,7 @@ services:
     command: server --console-address ":9001" /data
 
   hive-metastore:
-    build: ./hive
-    image: hive-metastore:latest
+    image: viet1846/hive-metastore:latest
     ports:
     - 9083:9083
     depends_on:
