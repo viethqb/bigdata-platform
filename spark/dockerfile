@@ -1,0 +1,19 @@
+FROM openjdk:11
+
+USER root
+RUN apt -y update && apt install -y iputils-ping vim
+
+WORKDIR /opt
+RUN wget https://dlcdn.apache.org/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3.tgz && tar xvf spark-3.3.2-bin-hadoop3.tgz && mv spark-3.3.2-bin-hadoop3 spark && rm spark-3.3.2-bin-hadoop3.tgz
+COPY ./spark/conf/* /opt/spark/conf/
+WORKDIR /opt/spark/jars
+RUN wget https://repo1.maven.org/maven2/io/delta/delta-core_2.12/2.3.0/delta-core_2.12-2.3.0.jar \
+&& wget https://repo1.maven.org/maven2/io/delta/delta-storage/2.3.0/delta-storage-2.3.0.jar \
+&& wget https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.8/antlr4-runtime-4.8.jar \
+&& wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.jar \
+&& wget https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.12.445/aws-java-sdk-s3-1.12.445.jar \
+&& wget https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.12.445/aws-java-sdk-1.12.445.jar \
+&& wget https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.12.445/aws-java-sdk-core-1.12.445.jar \
+&& wget https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-dynamodb/1.12.445/aws-java-sdk-dynamodb-1.12.445.jar
+WORKDIR /opt/spark
+ENTRYPOINT ["ping", "8.8.8.8"]
